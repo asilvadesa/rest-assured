@@ -5,13 +5,10 @@ import io.restassured.RestAssured;
 import io.restassured.http.Method;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.net.ResponseCache;
-
-import static io.restassured.RestAssured.*;
+import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
 public class UserJsonTest {
@@ -69,6 +66,16 @@ public class UserJsonTest {
                 .body("filhos[1].name", is("Luizinho"))
                 ;
 
+    }
+
+    @Test
+    public void deveRetornarUsuarioInexistente(){
+        given()
+        .when()
+                .get("http://restapi.wcaquino.me/users/4")
+        .then()
+                .statusCode(404)
+                .body("error", is("Usuário inexistente"));
     }
 
 }
