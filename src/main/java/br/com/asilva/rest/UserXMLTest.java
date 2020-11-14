@@ -15,13 +15,16 @@ public class UserXMLTest {
         .when()
             .get("http://restapi.wcaquino.me/usersXML/3")
         .then()
-            .body("user.name", is("Ana Julia"))
-            .body("user.@id", is("3"))
-            .body("user.filhos.name.size()", is(2))
-            .body("user.filhos.name[0]", is("Zezinho"))
-            .body("user.filhos.name[1]", is("Luizinho"))
-            .body("user.filhos.name", hasItem("Luizinho"))
-            .body("user.filhos.name", hasItems("Luizinho", "Zezinho"))
+            .statusCode(200)
+            .rootPath("user")
+            .body("name", is("Ana Julia"))
+            .body("@id", is("3"))
+            .rootPath("user.filhos")
+            .body("name.size()", is(2))
+            .body("name[0]", is("Zezinho"))
+            .body("name[1]", is("Luizinho"))
+            .body("name", hasItem("Luizinho"))
+            .body("name", hasItems("Luizinho", "Zezinho"))
 
         ;
     }
