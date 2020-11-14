@@ -1,6 +1,5 @@
 package br.com.asilva.rest;
 
-
 import io.restassured.RestAssured;
 import io.restassured.http.Method;
 import io.restassured.path.json.JsonPath;
@@ -96,4 +95,19 @@ public class UserJsonTest {
 
     }
 
+
+    @Test
+    public void devoFazerVerificacoesAvancadas(){
+        given()
+        .when()
+                .get("http://restapi.wcaquino.me/users")
+        .then()
+                .statusCode(200)
+                .body("$", hasSize(3))
+                .body("age.findAll{it <= 25}.size()", is(2))
+                .body("age.findAll{it <= 25 && it > 20 }.size()", is(1))
+                .body("findAll{it.age <= 25 }[0].name", is("Maria Joaquina"))
+                .body("find{it.age <= 25 }.name", is("Maria Joaquina"))
+                ;
+    }
 }
