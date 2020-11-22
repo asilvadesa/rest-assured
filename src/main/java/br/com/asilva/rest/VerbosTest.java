@@ -1,5 +1,6 @@
 package br.com.asilva.rest;
 
+import io.restassured.http.ContentType;
 import org.junit.Test;
 
 import static io.restassured.RestAssured.given;
@@ -40,5 +41,21 @@ public class VerbosTest {
 
     }
 
+    @Test
+    public void deveSalvarUsuarioViaXML(){
+        given()
+                .log().all()
+                .contentType(ContentType.XML)
+                .body("<user><name>Jose</name><age>50</age></user>")
+        .when()
+                .post("https://restapi.wcaquino.me/usersXML")
+        .then()
+                .log().all()
+                .statusCode(201)
+                .body("user.@id", is(notNullValue()))
+                .body("user.name", is("Jose"))
+                .body("user.age", is("50"));
+
+    }
 }
 
