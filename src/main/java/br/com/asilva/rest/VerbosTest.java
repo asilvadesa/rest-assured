@@ -1,6 +1,7 @@
 package br.com.asilva.rest;
 
 import io.restassured.http.ContentType;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -142,6 +143,28 @@ public class VerbosTest {
                 .body("user.@id", is(notNullValue()))
                 .body("user.name", is("User XML"))
                 .body("user.age", is("40"));
+
+    }
+
+    @Test
+    public void deveDeserealizarObjetoAoSalvarUsuarioViaXML(){
+
+        User user = new User("User XML", 40 );
+
+        User usuarioDeserelizado = given()
+                .log().all()
+                .contentType(ContentType.XML)
+                .body(user)
+                .when()
+                .post("https://restapi.wcaquino.me/usersXML")
+                .then()
+                .log().all()
+                .statusCode(201)
+                .body("user.@id", is(notNullValue()))
+                .extract().body().as(User.class);
+
+        assertThat(usuarioDeserelizado.getName(),is("User XML"));
+        assertThat(usuarioDeserelizado.getAge(), is(40));
 
     }
 
