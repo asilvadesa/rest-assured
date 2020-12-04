@@ -1,7 +1,6 @@
 package br.com.asilva.rest;
 
 import io.restassured.http.ContentType;
-import org.hamcrest.Matchers;
 import org.junit.Test;
 
 import java.util.HashMap;
