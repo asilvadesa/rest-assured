@@ -50,6 +50,26 @@ public class VerbosTest {
     }
 
     @Test
+    public void deveSalvarUsuarioComoObjeto(){
+
+        User user = new User("Add via Objeto", 35);
+
+        given()
+                .log().all()
+                .contentType("application/json")
+                .body(user)
+                .when()
+                .post("https://restapi.wcaquino.me/users")
+                .then()
+                .log().all()
+                .statusCode(201)
+                .body("id", is(notNullValue()))
+                .body("name", is("Add via Objeto"))
+                .body("age", is(35))
+        ;
+    }
+
+    @Test
     public void naoDeveSalvarUsuarioSemNome(){
         given()
                 .log().all()
