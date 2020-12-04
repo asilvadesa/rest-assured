@@ -48,4 +48,19 @@ public class EnviaDadosTest {
         ;
     }
 
+    @Test
+    public void deveEnviarValorViaQueryViaHeader(){
+        given()
+                .log().all()
+                .accept(ContentType.JSON)
+
+                .when()
+                    .get("http://restapi.wcaquino.me/v2/users")
+                .then()
+                    .log().all()
+                    .statusCode(200)
+                    .contentType(ContentType.JSON)
+        ;
+    }
+
 }
