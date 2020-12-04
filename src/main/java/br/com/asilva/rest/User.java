@@ -2,6 +2,7 @@ package br.com.asilva.rest;
 
 public class User {
 
+    private Long id;
     private String name;
     private Integer age;
     private Double salary;
@@ -33,5 +34,13 @@ public class User {
 
     public void setSalary(Double salary) {
         this.salary = salary;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
