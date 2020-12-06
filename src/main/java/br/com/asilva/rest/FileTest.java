@@ -47,7 +47,7 @@ public class FileTest {
 
         byte[] image = given().log().all()
                 .when()
-                    .get("https://restapi.wcaquino.me/download")
+                        .get("https://restapi.wcaquino.me/download")
                 .then()
                     .statusCode(200)
                     .extract().asByteArray();

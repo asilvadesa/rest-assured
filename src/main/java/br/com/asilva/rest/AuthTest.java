@@ -21,4 +21,53 @@ public class AuthTest {
         ;
     }
 
+    @Test
+    public void naoDeveAcessarSemSenha(){
+        given()
+                .log().all()
+        .when()
+                .get("https://restapi.wcaquino.me/basicauth")
+        .then()
+                .statusCode(401)
+        ;
+    }
+
+    @Test
+    public void deveFazerAutenticacaoBasica1(){
+        given()
+                .log().all()
+        .when()
+                .get("https://admin:senha@restapi.wcaquino.me/basicauth")
+        .then()
+                .log().all()
+                .statusCode(200)
+        ;
+    }
+
+    @Test
+    public void deveFazerAutenticacaoBasica2(){
+        given()
+                .log().all()
+                .auth().basic("admin", "senha")
+        .when()
+                .get("https://restapi.wcaquino.me/basicauth")
+        .then()
+                .log().all()
+                .statusCode(200)
+        ;
+    }
+
+    @Test
+    public void deveFazerAutenticacaoBasicaChallenge(){
+        given()
+                .log().all()
+                .auth().preemptive().basic("admin", "senha")
+                .when()
+                .get("https://restapi.wcaquino.me/basicauth2")
+                .then()
+                .log().all()
+                .statusCode(200)
+        ;
+    }
+
 }
