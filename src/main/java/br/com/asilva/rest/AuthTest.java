@@ -1,6 +1,12 @@
 package br.com.asilva.rest;
 
+import com.google.gson.annotations.JsonAdapter;
+import io.restassured.http.ContentType;
 import org.junit.Test;
+import sun.swing.StringUIClientPropertyKey;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
@@ -11,7 +17,7 @@ public class AuthTest {
     public void deveAcessarWeatherAPIcomChave(){
         given()
                 .queryParam("q", "Manaus,BR")
-                .queryParam("appid", "2f7980af9475eb01bb666f8aa5fa62a4")
+                .queryParam("appid", "cadastrar_chave_na_api")
                 .queryParam("unit", "metric")
         .when()
                 .get("http://api.openweathermap.org/data/2.5/weather")
@@ -62,12 +68,48 @@ public class AuthTest {
         given()
                 .log().all()
                 .auth().preemptive().basic("admin", "senha")
-                .when()
+        .when()
                 .get("https://restapi.wcaquino.me/basicauth2")
-                .then()
+        .then()
                 .log().all()
                 .statusCode(200)
         ;
+    }
+
+    @Test
+    public void deveFazerAutenticacaoComJWT(){
+
+        Map<String,String> login = new HashMap<String, String>();
+        login.put("email","anderson@silva");
+        login.put("senha", "123456");
+
+        // Logina na API
+        // Receber Token
+        String token = given()
+                .log().all()
+                .body(login)
+                .contentType(ContentType.JSON)
+        .when()
+                .post("http://barrigarest.wcaquino.me/signin")
+        .then()
+            .log().all()
+            .statusCode(200)
+            .extract().path("token")
+        ;
+
+        // Obter Contas
+        given()
+                .log().all()
+                .header("Authorization", "JWT " + token)
+        .when()
+                .get("http://barrigarest.wcaquino.me/contas")
+        .then()
+            .log().all()
+            .statusCode(200)
+            .body("nome", hasItem("Conta Test"))
+        ;
+
+
     }
 
 }
