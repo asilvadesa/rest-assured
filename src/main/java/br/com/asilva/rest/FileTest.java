@@ -1,10 +1,12 @@
 package br.com.asilva.rest;
 
-import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
